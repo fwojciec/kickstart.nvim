@@ -254,7 +254,8 @@ require('lazy').setup({
       -- Document existing key chains
       spec = {
         { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]oggle' },
+        { '<leader>t', group = '[T]est' },
+        { '<leader>th', group = '[T]oggle [H]int' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>w', desc = 'Save buffer' },
       },
@@ -903,6 +904,19 @@ require('lazy').setup({
       -- Disable the built-in listchars for tabs
       -- We'll use ibl exclusively for visualization
       vim.opt.list = false
+    end,
+  },
+  
+  -- Test runner integration
+  {
+    'vim-test/vim-test',
+    keys = {
+      { '<leader>t', ':TestNearest<CR>', desc = 'Run nearest test' },
+      { '<leader>T', ':TestFile<CR>', desc = 'Run all tests in file' },
+    },
+    config = function()
+      -- Set test strategy to run tests in a Neovim terminal
+      vim.g['test#strategy'] = 'neovim'
     end,
   },
 

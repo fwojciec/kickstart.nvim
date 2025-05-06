@@ -4,6 +4,21 @@ This document tracks all customizations and changes made to the kickstart.nvim c
 
 ## Change History
 
+### 2025-05-06: Added vim-test plugin for test running
+
+**Files Modified:**
+- `/init.lua` - Added vim-test plugin and keymappings
+
+**Changes:**
+- Added vim-test/vim-test plugin for running tests
+- Configured test strategy to use Neovim's built-in terminal
+- Added keybindings: `<leader>t` to run nearest test and `<leader>T` to run all tests in file
+- Updated which-key configuration to show test keybindings
+- Changed `<leader>t` group from "Toggle" to "Test"
+
+**References:**
+- https://github.com/vim-test/vim-test
+
 ### 2025-05-06: Added Go language support with auto-formatting
 
 **Files Modified:**
