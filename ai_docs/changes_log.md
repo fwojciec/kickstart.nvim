@@ -4,6 +4,15 @@ This document tracks all customizations and changes made to the kickstart.nvim c
 
 ## Change History
 
+### 2025-05-06: Added keybinding to save buffer with leader-w
+
+**Files Modified:**
+- `/init.lua` - Added new keybinding and updated which-key spec
+
+**Changes:**
+- Added mapping for `<leader>w` to save the current buffer (`:w` command)
+- Updated which-key configuration to document the new keybinding
+
 ### 2025-05-06: Consolidated indent_line plugin directly in init.lua
 
 **Files Modified:**
