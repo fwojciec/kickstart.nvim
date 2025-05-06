@@ -679,7 +679,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'goimports' }, -- goimports handles both imports and formatting
+        go = { 'goimports', 'gofmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -878,7 +878,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  
+
   -- Indentation guides configuration
   { -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
@@ -887,26 +887,26 @@ require('lazy').setup({
     main = 'ibl',
     config = function()
       -- Create a minimal setup with indent guides disabled by default
-      require("ibl").setup({
+      require('ibl').setup {
         enabled = false,
-        indent = { char = "▏" },
+        indent = { char = '▏' },
         scope = { enabled = false },
-      })
-      
+      }
+
       -- Create autocommands to enable indentation for specific filetypes
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {"yaml", "yml", "helm"},
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'yaml', 'yml', 'helm' },
         callback = function()
-          require("ibl").setup_buffer(0, { enabled = true })
+          require('ibl').setup_buffer(0, { enabled = true })
         end,
       })
-      
+
       -- Disable the built-in listchars for tabs
       -- We'll use ibl exclusively for visualization
       vim.opt.list = false
     end,
   },
-  
+
   -- Test runner integration
   {
     'vim-test/vim-test',
