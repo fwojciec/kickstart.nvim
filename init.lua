@@ -783,17 +783,11 @@ require('lazy').setup({
   },
 
   { -- Colorscheme configuration
-    -- You can easily change to a different colorscheme by changing the plugin and colorscheme command.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'sainnhe/gruvbox-material',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+    priority = 1000,
     config = function()
-      -- Set gruvbox-material configuration options
       vim.g.gruvbox_material_background = 'hard'
       vim.g.gruvbox_material_better_performance = 1
-      
-      -- Load the colorscheme
       vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
