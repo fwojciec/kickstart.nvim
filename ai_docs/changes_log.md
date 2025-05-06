@@ -4,6 +4,16 @@ This document tracks all customizations and changes made to the kickstart.nvim c
 
 ## Change History
 
+### 2025-05-06: Improved key mappings for testing and inlay hints
+
+**Files Modified:**
+- `/init.lua` - Updated key mappings and which-key configuration
+
+**Changes:**
+- Changed toggle inlay hints mapping from `<leader>th` to `<leader>i` for better clarity
+- Improved descriptions in which-key to be more consistent
+- Updated test mappings to have clearer descriptions
+
 ### 2025-05-06: Added vim-test plugin for test running
 
 **Files Modified:**

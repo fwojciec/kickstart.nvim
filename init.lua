@@ -255,8 +255,8 @@ require('lazy').setup({
       spec = {
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]est' },
-        { '<leader>th', group = '[T]oggle [H]int' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>i', desc = 'Toggle [I]nlay hints' },
         { '<leader>w', desc = 'Save buffer' },
       },
     },
@@ -530,9 +530,9 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
+            map('<leader>i', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
+            end, 'Toggle [I]nlay hints')
           end
         end,
       })
@@ -911,8 +911,8 @@ require('lazy').setup({
   {
     'vim-test/vim-test',
     keys = {
-      { '<leader>t', ':TestNearest<CR>', desc = 'Run nearest test' },
-      { '<leader>T', ':TestFile<CR>', desc = 'Run all tests in file' },
+      { '<leader>t', ':TestNearest<CR>', desc = 'Run nearest [T]est' },
+      { '<leader>T', ':TestFile<CR>', desc = 'Run all [T]ests in file' },
     },
     config = function()
       -- Set test strategy to run tests in a Neovim terminal
