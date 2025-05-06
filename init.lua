@@ -678,7 +678,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'goimports', 'gofmt' }, -- Run goimports then gofmt on Go files
+        go = { 'goimports' }, -- goimports handles both imports and formatting
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

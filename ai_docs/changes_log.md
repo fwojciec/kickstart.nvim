@@ -7,17 +7,16 @@ This document tracks all customizations and changes made to the kickstart.nvim c
 ### 2025-05-06: Added Go language support with auto-formatting
 
 **Files Modified:**
-- `/init.lua` - Added Go formatters and language server configuration
+- `/init.lua` - Added Go formatter and language server configuration
 
 **Changes:**
 - Added gopls language server for Go code intelligence
-- Configured automatic formatting for Go files on save using goimports and gofmt
+- Configured automatic formatting for Go files on save using only goimports
 - Uses the system-installed Go tools rather than Mason installations
 
 **References:**
 - https://github.com/golang/tools/tree/master/gopls
 - https://pkg.go.dev/golang.org/x/tools/cmd/goimports
-- https://pkg.go.dev/cmd/gofmt
 
 ### 2025-05-06: Added keybinding to save buffer with leader-w
 
