@@ -868,11 +868,38 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  
+  -- Indentation guides configuration
+  { -- Add indentation guides even on blank lines
+    'lukas-reineke/indent-blankline.nvim',
+    -- Enable `lukas-reineke/indent-blankline.nvim`
+    -- See `:help ibl`
+    main = 'ibl',
+    config = function()
+      -- Create a minimal setup with indent guides disabled by default
+      require("ibl").setup({
+        enabled = false,
+        indent = { char = "▏" },
+        scope = { enabled = false },
+      })
+      
+      -- Create autocommands to enable indentation for specific filetypes
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {"yaml", "yml", "helm"},
+        callback = function()
+          require("ibl").setup_buffer(0, { enabled = true })
+        end,
+      })
+      
+      -- Disable the built-in listchars for tabs
+      -- We'll use ibl exclusively for visualization
+      vim.opt.list = false
+    end,
+  },
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.

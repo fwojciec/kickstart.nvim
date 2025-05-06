@@ -4,19 +4,21 @@ This document tracks all customizations and changes made to the kickstart.nvim c
 
 ## Change History
 
-### 2025-05-06: Enabled minimal indent_line plugin for YAML files
+### 2025-05-06: Consolidated indent_line plugin directly in init.lua
 
 **Files Modified:**
-- `/init.lua` - Enabled the indent_line plugin
-- `/lua/kickstart/plugins/indent_line.lua` - Customized indent line config
+- `/init.lua` - Added indent-blankline.nvim configuration directly in the plugins section
+- Removed `/lua/kickstart/plugins/indent_line.lua`
 
 **Changes:**
-- Added minimal indent-blankline.nvim configuration
-- Disabled built-in listchars for tabs and special characters
-- Configured to only show indentation guides for YAML and YAML-like files
-- Used "▏" character for indent guides
-- Disabled scope highlighting
-- Set up auto-commands to automatically enable for yaml, yml, and helm files
+- Consolidated indent-blankline.nvim config directly in init.lua
+- Removed separate configuration file for better maintainability
+- Maintained the same minimal setup:
+  - Disabled built-in listchars
+  - Configured for YAML files only
+  - Used "▏" character for indent guides
+  - Disabled scope highlighting
+  - Auto-enabled for yaml, yml, and helm files
 
 **References:**
 - https://github.com/lukas-reineke/indent-blankline.nvim
