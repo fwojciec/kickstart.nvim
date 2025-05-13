@@ -829,23 +829,55 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
-
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
+    end,
+  },
+  
+  { -- Simple status line with minimal configuration
+    'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+    },
+    config = function()
+      local lualine = require("lualine")
+      local get_color = require("lualine.utils.utils").extract_highlight_colors
+      
+      lualine.setup({
+        options = {
+          section_separators = "",
+          component_separators = "¦",
+          theme = "auto",
+          globalstatus = true,
+        },
+        sections = {
+          lualine_a = {'mode'},
+          lualine_b = {
+            'branch',
+            {
+              'diagnostics',
+              symbols = { error = "𝔼", warn = "𝕎", info = "𝕀", hint = "ℍ" },
+              diagnostics_color = {
+                error = { fg = get_color("DiagnosticSignError", "fg") },
+                warn = { fg = get_color("DiagnosticSignWarn", "fg") },
+                info = { fg = get_color("DiagnosticSignInfo", "fg") },
+                hint = { fg = get_color("DiagnosticSignHint", "fg") },
+              },
+            },
+          },
+          lualine_c = {'filename'},
+          lualine_x = {
+            'encoding',
+            {
+              'fileformat',
+              icons_enabled = false,
+            },
+            'filetype',
+          },
+          lualine_y = {'progress'},
+          lualine_z = {'location'}
+        },
+      })
     end,
   },
   { -- Highlight, edit, and navigate code
