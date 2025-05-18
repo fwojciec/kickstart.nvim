@@ -131,6 +131,18 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Restore cursor position when opening files
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufRead" }, {
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype ~= "commit" and vim.bo.filetype ~= "rebase" and vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+      vim.cmd('normal! g`"')
+    end
+  end,
+  group = vim.api.nvim_create_augroup("CursorPositionGroup", { clear = true }),
+  once = true,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
