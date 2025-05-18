@@ -6,4 +6,4 @@ nvim
 spell/
 
 **/.claude/settings.local.json
-llazy-lock.json
+lazy-lock.json
