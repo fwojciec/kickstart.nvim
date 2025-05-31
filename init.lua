@@ -61,6 +61,20 @@ vim.opt.splitbelow = true
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
+-- Configure fill characters for UI elements
+vim.opt.fillchars = {
+  fold = ' ',
+  diff = '╱',
+  wbr = '─',
+  msgsep = '─',
+  horiz = ' ',
+  horizup = '│',
+  horizdown = '│',
+  vertright = '│',
+  vertleft = '│',
+  verthoriz = '│',
+}
+
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
 
@@ -87,6 +101,11 @@ vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = 'Save buffer' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+-- Git diff keymaps for unified view
+vim.keymap.set('n', '<leader>gu', '<cmd>terminal git diff<CR>', { desc = '[G]it [U]nified diff (all changes)' })
+vim.keymap.set('n', '<leader>gU', '<cmd>terminal git diff --staged<CR>', { desc = '[G]it [U]nified diff (staged)' })
+vim.keymap.set('n', '<leader>gf', '<cmd>terminal git diff %<CR>', { desc = '[G]it di[F]f current file' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -132,14 +151,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Restore cursor position when opening files
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufRead" }, {
-  pattern = "*",
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufRead' }, {
+  pattern = '*',
   callback = function()
-    if vim.bo.filetype ~= "commit" and vim.bo.filetype ~= "rebase" and vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
-      vim.cmd('normal! g`"')
+    if vim.bo.filetype ~= 'commit' and vim.bo.filetype ~= 'rebase' and vim.fn.line '\'"' > 1 and vim.fn.line '\'"' <= vim.fn.line '$' then
+      vim.cmd 'normal! g`"'
     end
   end,
-  group = vim.api.nvim_create_augroup("CursorPositionGroup", { clear = true }),
+  group = vim.api.nvim_create_augroup('CursorPositionGroup', { clear = true }),
   once = true,
 })
 
@@ -202,6 +221,16 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+    },
+  },
+
+  { -- Fugitive - Premier Git integration
+    'tpope/vim-fugitive',
+    cmd = { 'Git', 'G', 'Gdiffsplit', 'Gvdiffsplit', 'Gedit', 'Gsplit', 'Gread', 'Gwrite', 'Ggrep', 'Glgrep', 'Gmove', 'Gdelete', 'Gremove', 'Gbrowse' },
+    keys = {
+      { '<leader>gs', '<cmd>Git<CR>', desc = '[G]it [S]tatus' },
+      { '<leader>gD', '<cmd>Git diff<CR>', desc = '[G]it [D]iff (unified)' },
+      { '<leader>gB', '<cmd>Git blame<CR>', desc = '[G]it [B]lame' },
     },
   },
 
@@ -268,6 +297,7 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]est' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>g', group = '[G]it' },
         { '<leader>i', desc = 'Toggle [I]nlay hints' },
         { '<leader>w', desc = 'Save buffer' },
       },
@@ -332,12 +362,12 @@ require('lazy').setup({
         --
         defaults = {
           mappings = {
-            i = { 
+            i = {
               ['<c-enter>'] = 'to_fuzzy_refine',
-              ["<C-j>"] = require('telescope.actions').move_selection_next,
-              ["<C-k>"] = require('telescope.actions').move_selection_previous,
-              ["<C-u>"] = false,
-              ["<C-d>"] = false,
+              ['<C-j>'] = require('telescope.actions').move_selection_next,
+              ['<C-k>'] = require('telescope.actions').move_selection_previous,
+              ['<C-u>'] = false,
+              ['<C-d>'] = false,
             },
           },
         },
@@ -844,6 +874,40 @@ require('lazy').setup({
     'github/copilot.vim',
   },
 
+  { -- Git integration with fugitive
+    'tpope/vim-fugitive',
+    cmd = { 'Git', 'G', 'Gdiffsplit', 'Gvdiffsplit', 'Gedit', 'Gsplit', 'Gread', 'Gwrite', 'Ggrep', 'Gmove', 'Gdelete', 'Gremove', 'Gbrowse' },
+    keys = {
+      { '<leader>gs', '<cmd>Git<CR>', desc = '[G]it [S]tatus' },
+      { '<leader>gD', '<cmd>Git diff<CR>', desc = '[G]it [D]iff (unified)' },
+      { '<leader>gB', '<cmd>Git blame<CR>', desc = '[G]it [B]lame' },
+    },
+  },
+
+  { -- Diffview for git diffs and history
+    'sindrets/diffview.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    keys = {
+      { '<leader>gd', '<cmd>DiffviewOpen<CR>', desc = '[G]it [D]iffview' },
+      { '<leader>gh', '<cmd>DiffviewFileHistory<CR>', desc = '[G]it [H]istory' },
+      { '<leader>gc', '<cmd>DiffviewClose<CR>', desc = '[G]it diffview [C]lose' },
+      -- Add unified diff view keybindings
+      { '<leader>gu', '<cmd>terminal git diff<CR>', desc = '[G]it [U]nified diff (all changes)' },
+      { '<leader>gU', '<cmd>terminal git diff --staged<CR>', desc = '[G]it [U]nified diff (staged)' },
+      { '<leader>gf', '<cmd>execute "terminal git diff " . expand("%")<CR>', desc = '[G]it di[F]f current file' },
+    },
+    opts = {
+      use_icons = false,
+      hooks = {
+        diff_buf_win_enter = function(bufnr, winid, ctx)
+          -- Turn off cursor line for diffview windows because of bg conflict
+          -- https://github.com/neovim/neovim/issues/9800
+          vim.wo[winid].culopt = 'number'
+        end,
+      },
+    },
+  },
+
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -869,39 +933,39 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
-  
+
   { -- Simple status line with minimal configuration
     'nvim-lualine/lualine.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
     },
     config = function()
-      local lualine = require("lualine")
-      local get_color = require("lualine.utils.utils").extract_highlight_colors
-      
-      lualine.setup({
+      local lualine = require 'lualine'
+      local get_color = require('lualine.utils.utils').extract_highlight_colors
+
+      lualine.setup {
         options = {
-          section_separators = "",
-          component_separators = "¦",
-          theme = "auto",
+          section_separators = '',
+          component_separators = '¦',
+          theme = 'auto',
           globalstatus = true,
         },
         sections = {
-          lualine_a = {'mode'},
+          lualine_a = { 'mode' },
           lualine_b = {
             'branch',
             {
               'diagnostics',
-              symbols = { error = "𝔼", warn = "𝕎", info = "𝕀", hint = "ℍ" },
+              symbols = { error = '𝔼', warn = '𝕎', info = '𝕀', hint = 'ℍ' },
               diagnostics_color = {
-                error = { fg = get_color("DiagnosticSignError", "fg") },
-                warn = { fg = get_color("DiagnosticSignWarn", "fg") },
-                info = { fg = get_color("DiagnosticSignInfo", "fg") },
-                hint = { fg = get_color("DiagnosticSignHint", "fg") },
+                error = { fg = get_color('DiagnosticSignError', 'fg') },
+                warn = { fg = get_color('DiagnosticSignWarn', 'fg') },
+                info = { fg = get_color('DiagnosticSignInfo', 'fg') },
+                hint = { fg = get_color('DiagnosticSignHint', 'fg') },
               },
             },
           },
-          lualine_c = {'filename'},
+          lualine_c = { 'filename' },
           lualine_x = {
             'encoding',
             {
@@ -910,10 +974,10 @@ require('lazy').setup({
             },
             'filetype',
           },
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' },
         },
-      })
+      }
     end,
   },
   { -- Highlight, edit, and navigate code
