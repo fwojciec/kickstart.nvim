@@ -887,6 +887,7 @@ require('lazy').setup({
   { -- Diffview for git diffs and history
     'sindrets/diffview.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewRefresh' },
     keys = {
       { '<leader>gd', '<cmd>DiffviewOpen<CR>', desc = '[G]it [D]iffview' },
       { '<leader>gh', '<cmd>DiffviewFileHistory<CR>', desc = '[G]it [H]istory' },
